@@ -1,10 +1,10 @@
-// TaskManager.tsx
 import React, { useState } from 'react';
-import { useTaskManager } from './useTaskManager';
+import { useTaskManager } from './useTaskManager'; 
 import "./TaskManager.css";
 
 const TaskManager: React.FC = () => {
  const { tasks, addTask, deleteTask, updateTask, setSearchKeyword } = useTaskManager();
+
 
  const [inputValue, setInputValue] = useState<string>('');
 
@@ -20,9 +20,9 @@ const TaskManager: React.FC = () => {
         <input
           type="text"
           value={inputValue} 
-          onChange={(e) => setInputValue(e.target.value)} 
-        />
+          onChange={(e) => setInputValue(e.target.value)}         />
 
+        {}
         <button onClick={() => addTask(inputValue)}>Add Task</button>
       </div>
 
