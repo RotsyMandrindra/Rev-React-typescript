@@ -1,51 +1,43 @@
+import React, { useState } from "react";
 import { nanoid } from "nanoid";
-import { useState } from "react";
+import { Task } from "./task"; 
 import "./TaskManager.css";
 
-// TODO: create custom hook to manage task state
-export const TaskManager = () => {
-  const [title, setTitle] = useState("");
-  const [searchKeyword, setSearchKeyword] = useState("");
-  const [tasks, setTasks] = useState([]);
+const TaskManager: React.FC = () => {
+ const [title, setTitle] = useState<string>("");
+ const [searchKeyword, setSearchKeyword] = useState<string>("");
+ const [tasks, setTasks] = useState<Task[]>([]);
 
-  // remove task from list
-  const completeTask = (id) => {
+ const completeTask = (id: string) => {
     setTasks(tasks.filter((task) => task.id !== id));
-  };
+ };
 
-  const updateTask = (id, taskUpdate) => {
-    const newTasks = tasks.slice();
+ const updateTask = (id: string, taskUpdate: Partial<Task>) => {
+    setTasks(tasks.map((task) => (task.id === id ? { ...task, ...taskUpdate } : task)));
+ };
 
-    const index = tasks.findIndex((task) => task.id === id);
-
-    newTasks[index] = taskUpdate;
-
-    setTasks(newTasks);
-  };
-
-  const addTask = () => {
+ const addTask = () => {
     if (title.length < 1) {
       return;
     }
 
-    const newTask = {
-      // using nanoid to generate unique id
+    const newTask: Task = {
       id: nanoid(),
       title,
     };
-    setTasks((prev) => prev.concat(newTask));
+    setTasks((prev) => [...prev, newTask]);
     setTitle("");
-  };
+ };
 
-  const handleSearch = (ev) => {
+ const handleSearch = (ev: React.ChangeEvent<HTMLInputElement>) => {
     setSearchKeyword(ev.target.value);
-  };
+ };
 
-  const filteredTasks = tasks.filter((task) =>
+ const filteredTasks = tasks.filter((task) =>
     task.title.toLowerCase().includes(searchKeyword.toLowerCase()),
-  );
+ );
 
-  return (
+ return (
     <div className="container">
       <h1>Task Manager</h1>
 
@@ -81,5 +73,7 @@ export const TaskManager = () => {
         ))}
       </ul>
     </div>
-  );
+ );
 };
+
+export default TaskManager;
